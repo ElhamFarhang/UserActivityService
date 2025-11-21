@@ -1,6 +1,9 @@
 package com.example.useractivityservice.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +27,8 @@ public class UserActivity {
     private String mediaType;
 
     @ElementCollection
-    @Column(name = "genre_name")
+    @Column(name = "genre_name", columnDefinition = "char(36)")
+    @JdbcTypeCode(SqlTypes.CHAR)
     private List<String> genreName = new ArrayList<>();
 
     @Column(nullable = false)
