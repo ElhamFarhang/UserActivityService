@@ -10,13 +10,17 @@ import java.util.UUID;
 
 @Repository
 public interface UserActivityRepository extends JpaRepository<UserActivity, UUID> {
-//
-//    @Query("""
-//            SELECT activity.mediaId, activity.mediaType, COUNT(activity.mediaId) AS playCount
-//            FROM UserActivity activity
-//            WHERE activity.userId = :userId
-//            GROUP BY activity.mediaId, activity.mediaType
-//            ORDER BY playCount DESC
-//            """)
-//    List<Object[]> findMostPlayedByUser(String userId);
+
+    @Query("""
+            SELECT activity.mediaId, activity.mediaType, COUNT(activity.mediaId) AS playCount
+            FROM UserActivity activity
+            WHERE activity.userId = :userId
+            GROUP BY activity.mediaId, activity.mediaType
+            ORDER BY playCount DESC
+            """)
+    List<Object[]> findMostPlayedByUser(String userId);
+
+
+
+
 }
