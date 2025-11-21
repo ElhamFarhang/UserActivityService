@@ -32,13 +32,24 @@ man redan valt bort) */
 
         List<String> allOtherGenres = new ArrayList<>();
 
-        String randomGenre1;
+        String randomGenre1 = allOtherGenres.get(0);
         String randomGenre2;
 
-        List<UUID>
+        List<UUID> g1Recommendations = getTopSongsForGenre(topGenre);
+        List<UUID> g2Recommendations = getTopSongsForGenre(secondGenre);
+        List<UUID> g3Recommendations = getTopSongsForGenre(thirdGenre);
+        List<UUID> g4Recommendations = getTopSongsForGenre(randomGenre1);
+        List<UUID> g5Recommendations = getTopSongsForGenre(randomGenre2);
 
 
         return topTenRecommendations;
+    }
+
+    private List<UUID> getTopSongsForGenre(String genre) {
+
+        List<UUID> topSongs = findTop20SongsForGenre;
+
+        return topSongs;
     }
 
     @Override
