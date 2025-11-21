@@ -2,6 +2,9 @@ package com.example.useractivityservice.entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Entity
@@ -20,8 +23,9 @@ public class UserActivity {
     @Column(nullable = false)
     private String mediaType;
 
-    @Column(nullable = false)
-    private String genreName;
+    @ElementCollection
+    @Column(name = "genre_name")
+    private List<String> genreName = new ArrayList<>();
 
     @Column(nullable = false)
     private LocalDateTime playedAt;
@@ -34,11 +38,11 @@ public class UserActivity {
         this.playedAt = LocalDateTime.now();
     }
 
-    public String getGenreName() {
+    public List<String> getGenreName() {
         return genreName;
     }
 
-    public void setGenreName(String genreName) {
+    public void setGenreName(List<String> genreName) {
         this.genreName = genreName;
     }
 
@@ -84,13 +88,13 @@ public class UserActivity {
 
     @Override
     public String toString() {
-        return "UserActivity[" +
-                "genreName:'" + genreName + '\'' +
-                ", id:" + id +
-                ", userId:" + userId +
-                ", mediaId:" + mediaId +
-                ", mediaType:'" + mediaType + '\'' +
-                ", playedAt:" + playedAt +
-                ']';
+        return "UserActivity{" +
+                "genreName=" + genreName +
+                ", id=" + id +
+                ", userId='" + userId + '\'' +
+                ", mediaId='" + mediaId + '\'' +
+                ", mediaType='" + mediaType + '\'' +
+                ", playedAt=" + playedAt +
+                '}';
     }
 }
