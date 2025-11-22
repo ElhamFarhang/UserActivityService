@@ -14,32 +14,26 @@ import java.util.UUID;
 @Table(name = "user_activity")
 public class UserActivity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private String userId;
 
-    @Column(nullable = false) //UUID episode_id , UUID uuid
-    private UUID mediaId;
+    @Column(nullable = false)
+    private String mediaId;
 
     @Column(nullable = false)
     private String mediaType;
 
-    @ElementCollection
-    @Column(name = "genre_name", columnDefinition = "char(36)")
-    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(name = "genre_name", columnDefinition = "JSON")
+    @JdbcTypeCode(SqlTypes.JSON)
     private List<String> genreName = new ArrayList<>();
 
     @Column(nullable = false)
     private LocalDateTime playedAt;
 
     public UserActivity() {
-    }
-
-    @PrePersist
-    public void onCreate() {
-        this.playedAt = LocalDateTime.now();
     }
 
     public List<String> getGenreName() {
@@ -50,19 +44,19 @@ public class UserActivity {
         this.genreName = genreName;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public UUID getMediaId() {
+    public String getMediaId() {
         return mediaId;
     }
 
-    public void setMediaId(UUID mediaId) {
+    public void setMediaId(String mediaId) {
         this.mediaId = mediaId;
     }
 

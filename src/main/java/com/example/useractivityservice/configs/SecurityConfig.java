@@ -23,7 +23,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers(HttpMethod.POST,"/user/activity/playmedia").hasRole("edufy_User")
+                                .requestMatchers(HttpMethod.POST,"/user/activity/**").hasRole("edufy_User")
 //                                .requestMatchers(HttpMethod.POST,"/user/activity/mostplayed/**").hasRole("edufy_Admin")
                                 .anyRequest().authenticated()
                 )

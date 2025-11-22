@@ -1,12 +1,29 @@
 package com.example.useractivityservice.dto;
 
-import lombok.Data;
-
 import java.util.List;
-import java.util.UUID;
 
-@Data
 public class MediaResponseDTO {
-    private UUID mediaId;
+    private String mediaId;
     private List<String> genres;
+
+    public MediaResponseDTO(List<String> genres, String mediaId) {
+        this.genres = genres;
+        this.mediaId = mediaId;
+    }
+
+    public List<String> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<String> genres) {
+        this.genres = genres;
+    }
+
+    public String getMediaId() {
+        return mediaId;
+    }
+
+    public void setMediaId(String mediaId) {
+        this.mediaId = mediaId;
+    }
 }

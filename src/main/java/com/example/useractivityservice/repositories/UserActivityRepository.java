@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface UserActivityRepository extends JpaRepository<UserActivity, UUID> {
+    List<UserActivity> findAll();
 //
 //    @Query("""
 //            SELECT activity.mediaId, activity.mediaType, COUNT(activity.mediaId) AS playCount

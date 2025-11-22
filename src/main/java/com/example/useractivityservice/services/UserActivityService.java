@@ -1,5 +1,6 @@
 package com.example.useractivityservice.services;
 
+import com.example.useractivityservice.dto.ActivityDTO;
 import com.example.useractivityservice.dto.MediaResponseDTO;
 import com.example.useractivityservice.dto.MediaRequestDTO;
 import com.example.useractivityservice.entities.UserActivity;
@@ -7,6 +8,9 @@ import com.example.useractivityservice.repositories.UserActivityRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class UserActivityService {
@@ -17,8 +21,8 @@ public class UserActivityService {
     @Value("${podcast.service.url}")
     private String podcastServiceUrl;
 
-    @Value("${video.service.url}")
-    private String videoServiceUrl;
+//    @Value("${video.service.url}")
+//    private String videoServiceUrl;
 
     private final RestTemplate restTemplate;
     private final UserActivityRepository userActivityRepository;
@@ -44,9 +48,9 @@ public class UserActivityService {
             else if (request.getMediaType().equalsIgnoreCase("SONG")) {
                 url = musicServiceUrl + "/songbyurl/" + request.getUrl();
             }
-            else if (request.getMediaType().equalsIgnoreCase("VIDEO")) {
-                url = videoServiceUrl + "/videobyurl/" + request.getUrl();
-            }
+//            else if (request.getMediaType().equalsIgnoreCase("VIDEO")) {
+//                url = videoServiceUrl + "/videobyurl/" + request.getUrl();
+//            }
             else {
                 throw new RuntimeException("Unknown media type: " + request.getMediaType());
             }
@@ -56,6 +60,7 @@ public class UserActivityService {
             activity.setMediaId(mediaResponseDTO.getMediaId());
             activity.setGenreName(mediaResponseDTO.getGenres());
             activity.setMediaType(request.getMediaType());
+            activity.setPlayedAt(LocalDateTime.now());
 
             userActivityRepository.save(activity);
         }catch (Exception e) {
@@ -63,6 +68,22 @@ public class UserActivityService {
         }
     }
 
+    public List<UserActivity> getAllActivities() {
+        List<UserActivity> activityList = userActivityRepository.findAll();
+        if (activityList.isEmpty()) {
+            throw new RuntimeException("There are no posts in the database");
+        }
+        return activityList;
+    }
 
+    public UserActivity setActivity(ActivityDTO activityDTO, String userId) {
+        UserActivity activity = new UserActivity();
+        activity.setUserId(userId);
+        activity.setMediaId(activityDTO.getMediaId());
+        activity.setMediaType(activityDTO.getMediaType());
+        activity.setGenreName(activityDTO.getGenreName());
+        activity.setPlayedAt(LocalDateTime.now());
 
+        return userActivityRepository.save(activity);
+    }
 }
