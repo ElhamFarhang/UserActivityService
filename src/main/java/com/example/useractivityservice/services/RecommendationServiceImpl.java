@@ -80,8 +80,10 @@ public class RecommendationServiceImpl implements RecommendationService {
         topTenRecommendations.addAll(getTopMediaForGenre(randomGenre2,1, mediaType, userId));
 
 
-        if (topTenRecommendations.size() < 10 ) {
-            while (topTenRecommendations.size() < 10) {
+        if (topTenRecommendations.size() < 10 && !allOtherGenres.isEmpty() ) {
+            int counter = 0;
+            while (topTenRecommendations.size() < 10 && counter < 100) {
+                counter++;
                 String randomGenre = allOtherGenres.get(random.nextInt(allOtherGenres.size())); //Kan upprepa genre av de som finns kvar.
                 topTenRecommendations.addAll(getTopMediaForGenre(randomGenre,1, mediaType, userId));
             }
