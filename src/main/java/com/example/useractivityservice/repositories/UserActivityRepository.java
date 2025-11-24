@@ -40,7 +40,6 @@ public interface UserActivityRepository extends JpaRepository<UserActivity, UUID
                                                  @Param("mediaType") String mediaType, @Param("startDate") LocalDateTime startDate);
 
 
-
     @Query("""
     SELECT DISTINCT g
     FROM UserActivity ua
@@ -49,25 +48,31 @@ public interface UserActivityRepository extends JpaRepository<UserActivity, UUID
     """)
     List<String> findAllDistinctGenresByMediaType(@Param("mediaType") String mediaType);
 
+
     @Query("""
-    SELECT ua.mediaId, COUNT(ua.id) AS playCount
+    SELECT ua.mediaId
     FROM UserActivity ua
     JOIN ua.genreName g
     WHERE g = :genre
       AND ua.mediaType = :mediaType
       AND ua.playedAt >= :startDate
     GROUP BY ua.mediaId
-    ORDER BY playCount DESC
-    """)
+    ORDER BY COUNT(ua.id) DESC
+""")
     List<UUID> findTopMediaTypeByGenreAndPeriod(@Param("genre") String genre, @Param("startDate") LocalDateTime startDate,
                                                 Pageable pageable, @Param("mediaType") String mediaType);
 
+
     @Query("""
-    SELECT ua.mediaId
+    SELECT DISTINCT ua.mediaId
     FROM UserActivity ua
+    JOIN ua.genreName g
     WHERE ua.userId = :userId
       AND ua.mediaType = :mediaType
-    """)
-    List<UUID> findMediaPlayedByUser(@Param("userId") String userId, @Param("mediaType") String mediaType);
+      AND ua.playedAt >= :startDate
+      AND g = :genre
+""")
+    List<UUID> findMediaPlayedByUser(@Param("userId") String userId, @Param("mediaType") String mediaType,
+                                     @Param("startDate") LocalDateTime startDate, @Param("genre") String genre);
 
 }

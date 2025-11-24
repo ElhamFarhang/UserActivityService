@@ -1,88 +1,162 @@
 package com.example.useractivityservice.services;
 
+import com.example.useractivityservice.external.UserApiClient;
 import com.example.useractivityservice.repositories.UserActivityRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
+@Service
 public class RecommendationServiceImpl implements RecommendationService {
 
-    /*Det ska finnas en mikrotjänst som visar topp 10 rekommenderade media som en
-användare inte lyssnat på utifrån användarens topp 3 genrer. Låt 20% av dessa
-rekommendationer komma från andra genrer. (Här kan tumme ner komma väl till pass,
-låt säga att man lyssnat på alla medier, då behöver man gå ett varv till, men undviker de
-man redan valt bort) */
-
-
     private final UserActivityRepository userActivityRepository;
+    private final UserApiClient userApiClient;
 
-    public RecommendationServiceImpl(UserActivityRepository userActivityRepository) {
+    @Autowired
+    public RecommendationServiceImpl(UserActivityRepository userActivityRepository, UserApiClient userApiClient) {
         this.userActivityRepository = userActivityRepository;
+        this.userApiClient = userApiClient;
     }
 
     @Override
-    public List<UUID> getSongTopTenRecommendations(String userId) { //TODO Ändra till UUID?
+    public List<UUID> getRecommendations(String userId, String mediaType) {
         List<UUID> topTenRecommendations = new ArrayList<>();
 
         List<String> top3Genres = userActivityRepository.findMostFrequentGenresForUserId(
-                userId, PageRequest.of(0, 3), "song", LocalDateTime.now().minusDays(100));
+                userId, PageRequest.of(0, 3), mediaType, LocalDateTime.now().minusDays(100));
 
-        String topGenre = top3Genres.get(0);
-        String secondGenre = top3Genres.get(1);
-        String thirdGenre = top3Genres.get(2);
+        List<String> allOtherGenres = userActivityRepository.findAllDistinctGenresByMediaType(mediaType);
 
-        List<String> allOtherGenres = userActivityRepository.findAllDistinctGenresByMediaType("song");
+        if (allOtherGenres.size() < 5) {
+            throw new IllegalStateException("Not enough genres available for recommendations");
+        }
+
+        Random random = new Random();
+
+        String topGenre;
+        String secondGenre;
+        String thirdGenre;
+
+        if (top3Genres.size() >= 3) {
+            topGenre = top3Genres.get(0);
+            secondGenre = top3Genres.get(1);
+            thirdGenre = top3Genres.get(2);
+        } else if (top3Genres.size() == 2) {
+            topGenre = top3Genres.get(0);
+            secondGenre = top3Genres.get(1);
+            thirdGenre = allOtherGenres.remove(random.nextInt(allOtherGenres.size()));
+        } else if (top3Genres.size() == 1) {
+            topGenre = top3Genres.get(0);
+            secondGenre = allOtherGenres.remove(random.nextInt(allOtherGenres.size()));
+            thirdGenre = allOtherGenres.remove(random.nextInt(allOtherGenres.size()));
+        } else {
+            topGenre = allOtherGenres.remove(random.nextInt(allOtherGenres.size()));
+            secondGenre = allOtherGenres.remove(random.nextInt(allOtherGenres.size()));
+            thirdGenre = allOtherGenres.remove(random.nextInt(allOtherGenres.size()));
+        }
 
         allOtherGenres.remove(topGenre);
         allOtherGenres.remove(secondGenre);
         allOtherGenres.remove(thirdGenre);
 
-        Random random = new Random();
-
         String randomGenre1 = allOtherGenres.remove(random.nextInt(allOtherGenres.size()));
-        String randomGenre2 = allOtherGenres.get(random.nextInt(allOtherGenres.size()));
+        String randomGenre2 = allOtherGenres.remove(random.nextInt(allOtherGenres.size()));
 
-        topTenRecommendations.addAll(getTopSongsForGenre(topGenre,3));
-        topTenRecommendations.addAll(getTopSongsForGenre(secondGenre,3));
-        topTenRecommendations.addAll(getTopSongsForGenre(thirdGenre,2));
-        topTenRecommendations.addAll(getTopSongsForGenre(randomGenre1,1));
-        topTenRecommendations.addAll(getTopSongsForGenre(randomGenre2,1));
+        String additionalGenre = "";
+        Boolean moreTopGenres = false;
 
-        return topTenRecommendations;
-    }
+        topTenRecommendations.addAll(getTopMediaForGenre(topGenre,3, mediaType, userId));
 
-    private List<UUID> getTopSongsForGenre(String genre, int numberOfSongs) {
+        if (topTenRecommendations.size() == 3) {
+            additionalGenre = topGenre;
+            moreTopGenres = true;
+        }
+        topTenRecommendations.addAll(getTopMediaForGenre(secondGenre,3, mediaType, userId));
+        topTenRecommendations.addAll(getTopMediaForGenre(thirdGenre,2, mediaType, userId));
+        topTenRecommendations.addAll(getTopMediaForGenre(randomGenre1,1, mediaType, userId));
+        topTenRecommendations.addAll(getTopMediaForGenre(randomGenre2,1, mediaType, userId));
 
-        List<UUID> topSongs = userActivityRepository.findTopMediaTypeByGenreAndPeriod(
-                genre,
-                LocalDateTime.now().minusDays(100),
-                PageRequest.of(0, numberOfSongs) , "song");
 
-        if (topSongs.size() < numberOfSongs) {          //TODO se till att numberOfSongs alltid är det som returneras
-            getRandomNotDislikedMediaForGenre(genre, numberOfSongs-topSongs.size());
+        if (topTenRecommendations.size() < 10 ) {
+            while (topTenRecommendations.size() < 10) {
+                String randomGenre = allOtherGenres.get(random.nextInt(allOtherGenres.size())); //Kan upprepa genre av de som finns kvar.
+                topTenRecommendations.addAll(getTopMediaForGenre(randomGenre,1, mediaType, userId));
+            }
         }
 
-        return topSongs;
-    }
-
-    private List<UUID> getRandomNotDislikedMediaForGenre(String genre, int numberOfSongs) {
-        List<UUID> randomNotDislikedMedia = new ArrayList<>();
-
-        return randomNotDislikedMedia;
+        return topTenRecommendations;
 
     }
 
-    @Override
-    public List<UUID> getPodTopTenRecommendations(String userId) {
-        return List.of();
+    private List<UUID> getTopMediaForGenre(String genre, int numberOfMediaType, String mediaType, String userId) {
+
+        List<UUID> topMedia = userActivityRepository.findTopMediaTypeByGenreAndPeriod(genre, LocalDateTime.now().minusDays(30),
+                PageRequest.of(0, numberOfMediaType), mediaType);
+
+        List<UUID> played = userActivityRepository.findMediaPlayedByUser(userId, mediaType, LocalDateTime.MIN, genre);
+
+        List<UUID> recommendations = new ArrayList<>();
+
+        for (UUID mediaId : topMedia) {
+            if (!played.contains(mediaId)) {
+                recommendations.add(mediaId);
+            }
+            if (recommendations.size() >= numberOfMediaType) {
+                break;
+            }
+        }
+
+        if (recommendations.size() < numberOfMediaType) {
+            topMedia = userActivityRepository.findTopMediaTypeByGenreAndPeriod(genre, LocalDateTime.MIN,
+                    PageRequest.of(0, numberOfMediaType), mediaType);
+
+            for (UUID mediaId : topMedia) {
+                if (!played.contains(mediaId)) {
+                    recommendations.add(mediaId);
+                }
+                if (recommendations.size() >= numberOfMediaType) {
+                    break;
+                }
+            }
+            if (recommendations.size() < numberOfMediaType) {
+
+                List<UUID> dislikedMedia = userApiClient.getLikedOrDislikedMediaList(userId, mediaType, false);
+                for (UUID mediaId : topMedia) {
+                    if (!dislikedMedia.contains(mediaId)) {
+                        recommendations.add(mediaId);
+                    }
+                    topMedia.remove(mediaId);
+                    if (recommendations.size() >= numberOfMediaType) {
+                        break;
+                    }
+                }
+            }
+            if (recommendations.size() < numberOfMediaType) {
+                List<UUID> likedMedia = userApiClient.getLikedOrDislikedMediaList(userId, mediaType, true);
+                for (UUID mediaId : topMedia) {
+                    if (!likedMedia.contains(mediaId)) {
+                        recommendations.add(mediaId);
+                    }
+                    topMedia.remove(mediaId);
+                    if (recommendations.size() >= numberOfMediaType) {
+                        break;
+                    }
+                }
+            }
+            if (recommendations.size() < numberOfMediaType) {
+                for (UUID mediaId : topMedia) {
+                    recommendations.add(mediaId);
+                    if (recommendations.size() >= numberOfMediaType) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return recommendations;
     }
 
-    @Override
-    public List<UUID> getVideoTopTenRecommendations(String userId) {
-        return List.of();
-    }
 }
