@@ -5,9 +5,9 @@ import java.util.UUID;
 
 public interface RecommendationService {
 
-    List<UUID> getSongTopTenRecommendations(UUID userId);
-    List<UUID> getPodTopTenRecommendations(UUID userId);
-    List<UUID> getVideoTopTenRecommendations(UUID userId);
+    List<UUID> getSongTopTenRecommendations(String userId);
+    List<UUID> getPodTopTenRecommendations(String userId);
+    List<UUID> getVideoTopTenRecommendations(String userId);
 
 
 }
