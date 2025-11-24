@@ -28,8 +28,8 @@ man redan valt bort) */
     public List<UUID> getSongTopTenRecommendations(String userId) { //TODO Ändra till UUID?
         List<UUID> topTenRecommendations = new ArrayList<>();
 
-        List<String> top3Genres = userActivityRepository.findMostFrequentGenresForUserId(  //TODO lägga till date?
-                userId, PageRequest.of(0, 3), "song");
+        List<String> top3Genres = userActivityRepository.findMostFrequentGenresForUserId(
+                userId, PageRequest.of(0, 3), "song", LocalDateTime.now().minusDays(100));
 
         String topGenre = top3Genres.get(0);
         String secondGenre = top3Genres.get(1);

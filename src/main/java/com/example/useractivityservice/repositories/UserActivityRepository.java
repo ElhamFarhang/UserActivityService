@@ -32,10 +32,12 @@ public interface UserActivityRepository extends JpaRepository<UserActivity, UUID
     JOIN ua.genreName g
     WHERE ua.userId = :userId
       AND ua.mediaType = :mediaType
+      AND ua.playedAt >= :startDate
     GROUP BY g
     ORDER BY COUNT(g) DESC
     """)
-    List<String> findMostFrequentGenresForUserId(@Param("userId") String userId, Pageable pageable, @Param("mediaType") String mediaType);
+    List<String> findMostFrequentGenresForUserId(@Param("userId") String userId, Pageable pageable,
+                                                 @Param("mediaType") String mediaType, @Param("startDate") LocalDateTime startDate);
 
 
 
