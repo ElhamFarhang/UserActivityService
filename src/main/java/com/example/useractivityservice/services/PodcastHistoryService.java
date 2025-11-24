@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -31,8 +32,10 @@ public class PodcastHistoryService {
     }
 
     public Object registerPodcastHistory(String podurl, String userId, String accessToken) {
-        String encodedUrl = URLEncoder.encode(podurl, StandardCharsets.UTF_8);
-        String endpoint = podcastServiceUrl + "/pods/podcasts/episodes/getidandgenrefromurl/?url=" + encodedUrl;
+        String endpoint = UriComponentsBuilder
+                .fromHttpUrl(podcastServiceUrl + "/pods/podcasts/episodes/getidandgenrefromurl/?url=")
+                .queryParam("url", podurl)
+                .toUriString();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);

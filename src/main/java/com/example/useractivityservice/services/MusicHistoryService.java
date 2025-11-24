@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -31,8 +32,10 @@ public class MusicHistoryService {
     }
 
     public Object registerMusicHistory(String musicurl, String userId, String accessToken) {
-        String encodedUrl = URLEncoder.encode(musicurl, StandardCharsets.UTF_8);
-        String endpoint = musicServiceUrl + "/songs/songurl?url=" + encodedUrl;
+        String endpoint = UriComponentsBuilder
+                .fromHttpUrl(musicServiceUrl + "/songs/songurl")
+                .queryParam("url", musicurl)
+                .toUriString();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
