@@ -5,11 +5,11 @@ import java.util.UUID;
 
 public class ActivityDTO {
 
-    private String mediaId;
+    private UUID mediaId;
     private String mediaType;
     private List<String> genreName;
 
-    public ActivityDTO(List<String> genreName, String mediaId, String mediaType) {
+    public ActivityDTO(List<String> genreName, UUID mediaId, String mediaType) {
         this.genreName = genreName;
         this.mediaId = mediaId;
         this.mediaType = mediaType;
@@ -23,11 +23,11 @@ public class ActivityDTO {
         this.genreName = genreName;
     }
 
-    public String getMediaId() {
+    public UUID getMediaId() {
         return mediaId;
     }
 
-    public void setMediaId(String mediaId) {
+    public void setMediaId(UUID mediaId) {
         this.mediaId = mediaId;
     }
 

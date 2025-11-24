@@ -7,7 +7,6 @@ import org.hibernate.type.SqlTypes;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Entity
@@ -20,8 +19,9 @@ public class UserActivity {
     @Column(nullable = false)
     private String userId;
 
-    @Column(nullable = false)
-    private String mediaId;
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(nullable = false, columnDefinition = "char(36)")
+    private UUID mediaId;
 
     @Column(nullable = false)
     private String mediaType;
@@ -52,11 +52,11 @@ public class UserActivity {
         this.id = id;
     }
 
-    public String getMediaId() {
+    public UUID getMediaId() {
         return mediaId;
     }
 
-    public void setMediaId(String mediaId) {
+    public void setMediaId(UUID mediaId) {
         this.mediaId = mediaId;
     }
 
