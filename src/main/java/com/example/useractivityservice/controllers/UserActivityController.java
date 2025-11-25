@@ -45,7 +45,7 @@ public class UserActivityController {
     }
 
     @PostMapping("/playpodcast")
-    public ResponseEntity<?> playPodcast(@RequestBody @RequestParam String podurl, @AuthenticationPrincipal Jwt jwt, @RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<?> playPodcast(@RequestParam String podurl, @AuthenticationPrincipal Jwt jwt, @RequestHeader("Authorization") String authHeader) {
         try {
             String userId = jwt.getSubject();
             String accessToken = authHeader.replace("Bearer ", "");
