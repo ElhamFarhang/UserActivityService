@@ -3,6 +3,7 @@ package com.example.useractivityservice.dto;
 import java.util.List;
 import java.util.UUID;
 
+//--------------------- Elham - MediaResponseDTO --------------
 public class MediaResponseDTO {
     private UUID mediaId;
     private List<String> genres;
