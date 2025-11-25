@@ -17,7 +17,7 @@ import java.util.Map;
 
 //--------------------- Elham - UserActivityController --------------
 @RestController
-@RequestMapping("/user/activity")
+@RequestMapping("/activity")
 public class UserActivityController {
 
     private final UserActivityService userActivityService;
