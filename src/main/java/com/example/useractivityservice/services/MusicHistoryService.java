@@ -52,10 +52,10 @@ public class MusicHistoryService {
             activity.setPlayedAt(LocalDateTime.now());
             userActivityRepository.save(activity);
 
-            FUNCTIONALITY_LOGGER.info("User activity saved successfully: userId:'{}', media url: '{}'", activity.getUserId(), musicurl);
+            FUNCTIONALITY_LOGGER.info("User activity saved successfully: userId: '{}', mediaUrl: '{}'", activity.getUserId(), musicurl);
             return activity;
         } catch (Exception e) {
-            FUNCTIONALITY_LOGGER.error("Exception while registering music history media url: '{}', error: '{}'", musicurl, e.getMessage());
+            FUNCTIONALITY_LOGGER.error("Failed to register music history. mediaUrl: '{}', error: '{}'", musicurl, e.getMessage());
             throw new RuntimeException("Error while registering music history: " + e.getMessage(), e);
         }
     }

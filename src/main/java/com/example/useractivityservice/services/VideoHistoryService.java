@@ -51,11 +51,11 @@ public class VideoHistoryService {
             activity.setGenreName(response.getBody().getGenres());
             activity.setPlayedAt(LocalDateTime.now());
             userActivityRepository.save(activity);
-            FUNCTIONALITY_LOGGER.info("User activity saved successfully: userId:'{}', media url: '{}'",  activity.getUserId(), videourl);
+            FUNCTIONALITY_LOGGER.info("User activity saved successfully: userId: '{}', mediaUrl: '{}'",  activity.getUserId(), videourl);
 
             return activity;
         }catch (Exception e) {
-            FUNCTIONALITY_LOGGER.error("Exception while registering video history media url: '{}', error: '{}'", videourl, e.getMessage());
+            FUNCTIONALITY_LOGGER.error("Failed to register video history. mediaUrl: '{}', error: '{}'", videourl, e.getMessage());
             throw new RuntimeException("Error while registering video history: " + e.getMessage(), e);
         }
     }

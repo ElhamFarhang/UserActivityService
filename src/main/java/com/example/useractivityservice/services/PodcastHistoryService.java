@@ -52,10 +52,10 @@ public class PodcastHistoryService {
         activity.setPlayedAt(LocalDateTime.now());
         userActivityRepository.save(activity);
 
-        FUNCTIONALITY_LOGGER.info("User activity saved successfully: userId:'{}', media url: '{}'",  activity.getUserId(), podurl);
+        FUNCTIONALITY_LOGGER.info("User activity saved successfully: userId: '{}', mediaUrl: '{}'",  activity.getUserId(), podurl);
         return activity;
     } catch (Exception e) {
-        FUNCTIONALITY_LOGGER.error("Exception while registering podcast history media url: '{}', error: '{}'", podurl, e.getMessage());
+        FUNCTIONALITY_LOGGER.error("Failed to register podcast history. mediaUrl: '{}', error: '{}'", podurl, e.getMessage());
         throw new RuntimeException("Error while registering podcast history: " + e.getMessage(), e);
     }
     }

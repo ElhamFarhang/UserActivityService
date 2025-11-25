@@ -28,8 +28,8 @@ public class UserActivityService {
             }
             return activityList;
         }catch (Exception e) {
-            FUNCTIONALITY_LOGGER.error("Exception while fetching activities history- error: '{}'", e.getMessage());
-            throw new RuntimeException("Error while fetching activities history: " + e.getMessage(), e);
+            FUNCTIONALITY_LOGGER.error("Failed to fetch activity history- error: '{}'", e.getMessage());
+            throw new RuntimeException("Failed to fetch activity history: " + e.getMessage(), e);
         }
     }
 
@@ -43,10 +43,10 @@ public class UserActivityService {
             activity.setPlayedAt(LocalDateTime.now());
             userActivityRepository.save(activity);
 
-            FUNCTIONALITY_LOGGER.info("User activity saved successfully: userId:'{}', mediaId: '{}'", activity.getUserId(), activity.getMediaId());
+            FUNCTIONALITY_LOGGER.info("User activity saved successfully: userId: '{}', mediaId: '{}'", activity.getUserId(), activity.getMediaId());
             return activity;
         }catch (Exception e) {
-            FUNCTIONALITY_LOGGER.error("Exception while registering user activity- error: '{}'", e.getMessage());
+            FUNCTIONALITY_LOGGER.error("Failed to register user activity- error: '{}'", e.getMessage());
             throw new RuntimeException("Error while registering user activity: " + e.getMessage(), e);
         }
 
