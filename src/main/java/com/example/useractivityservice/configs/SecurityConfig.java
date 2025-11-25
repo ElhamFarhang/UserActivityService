@@ -23,8 +23,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers(HttpMethod.POST,"/user/activity/**").hasRole("edufy_User")
-//                                .requestMatchers(HttpMethod.POST,"/user/activity/mostplayed/**").hasRole("edufy_Admin")
+                                .requestMatchers("/activity/playmusic/**").hasRole("edufy_User")
+                                .requestMatchers("/activity/playpodcast/**").hasRole("edufy_User")
+                                .requestMatchers("/activity/playvideo/**").hasRole("edufy_User")
+                                .requestMatchers("/activity/addactivity/**").hasRole("edufy_User")
+                                .requestMatchers("/activity/activities/**").hasRole("edufy_Admin")
+//                                .requestMatchers("/activity/mostplayed/**").hasRole("edufy_Admin")
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 ->
