@@ -4,6 +4,8 @@ import com.example.useractivityservice.dto.MediaResponseDTO;
 import com.example.useractivityservice.entities.UserActivity;
 import com.example.useractivityservice.media.MediaType;
 import com.example.useractivityservice.repositories.UserActivityRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +24,7 @@ public class PodcastHistoryService {
     @Value("${podcast.service.url}")
     private String podcastServiceUrl;
 
+    private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
     private final RestTemplate restTemplate;
     private final UserActivityRepository userActivityRepository;
 
@@ -31,6 +34,7 @@ public class PodcastHistoryService {
     }
 
     public Object registerPodcastHistory(String podurl, String userId, String accessToken) {
+       try{
         String endpoint = UriComponentsBuilder
                 .fromHttpUrl(podcastServiceUrl + "/pods/podcasts/episodes/getidandgenrefromurl/?url=")
                 .queryParam("url", podurl)
@@ -46,7 +50,13 @@ public class PodcastHistoryService {
         activity.setMediaType(MediaType.PODCAST.name());
         activity.setGenreName(response.getBody().getGenres());
         activity.setPlayedAt(LocalDateTime.now());
+        userActivityRepository.save(activity);
 
-        return userActivityRepository.save(activity);
+        FUNCTIONALITY_LOGGER.info("User activity saved successfully: userId:'{}', media url: '{}'",  activity.getUserId(), podurl);
+        return activity;
+    } catch (Exception e) {
+        FUNCTIONALITY_LOGGER.error("Exception while registering podcast history media url: '{}', error: '{}'", podurl, e.getMessage());
+        throw new RuntimeException("Error while registering podcast history: " + e.getMessage(), e);
+    }
     }
 }
