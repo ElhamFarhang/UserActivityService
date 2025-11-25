@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+//--------------------- Elham - UserActivity --------------
 @Entity
 @Table(name = "user_activity")
 public class UserActivity {
