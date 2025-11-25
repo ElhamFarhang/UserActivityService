@@ -7,39 +7,34 @@ import org.hibernate.type.SqlTypes;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
+//--------------------- Elham - UserActivity --------------
 @Entity
 @Table(name = "user_activity")
 public class UserActivity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private String userId;
 
-    @Column(nullable = false) //UUID episode_id , UUID uuid
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(nullable = false, columnDefinition = "char(36)")
     private UUID mediaId;
 
     @Column(nullable = false)
     private String mediaType;
 
-    @ElementCollection
-    @Column(name = "genre_name", columnDefinition = "char(36)")
-    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(name = "genre_name", columnDefinition = "JSON")
+    @JdbcTypeCode(SqlTypes.JSON)
     private List<String> genreName = new ArrayList<>();
 
     @Column(nullable = false)
     private LocalDateTime playedAt;
 
     public UserActivity() {
-    }
-
-    @PrePersist
-    public void onCreate() {
-        this.playedAt = LocalDateTime.now();
     }
 
     public List<String> getGenreName() {
@@ -50,11 +45,11 @@ public class UserActivity {
         this.genreName = genreName;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

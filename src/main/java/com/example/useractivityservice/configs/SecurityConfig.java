@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+//--------------------- Elham - SecurityConfig --------------
 @Configuration
 public class SecurityConfig {
     private final JwtAuthConverter jwtAuthConverter;
@@ -23,7 +24,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth ->
                         auth
-                                .requestMatchers(HttpMethod.POST,"/user/activity/playmedia").hasRole("edufy_User")
+                                .requestMatchers(HttpMethod.POST,"/user/activity/**").hasRole("edufy_User")
 //                                .requestMatchers(HttpMethod.POST,"/user/activity/mostplayed/**").hasRole("edufy_Admin")
                                 .anyRequest().authenticated()
                 )
