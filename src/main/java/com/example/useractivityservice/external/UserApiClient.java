@@ -15,6 +15,7 @@ import org.springframework.web.client.RestClientException;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -32,40 +33,27 @@ public class UserApiClient {
     }
 
 
-    public List<UUID> getLikedOrDislikedMediaList(String userId, String mediaType, Boolean liked) {         //TODO ändra till uuid?
-        String uri;
-        String likedOrDisliked = " ";
+    public List<UUID> getLikedOrDislikedMediaList(String userId, String mediaType, Boolean liked) {
+        String uri = "";
         if (liked) {
-            likedOrDisliked = " Liked";
+            uri = userServiceUrl + "/user/likes/userlikes/map/" + userId;
         }
         if (!liked) {
-            likedOrDisliked = " Disliked";
+            uri = userServiceUrl + "/user/dislikes/userdislikes/map/" + userId;
         }
 
-        switch (mediaType) {                                                             //TODO rätt adresser
-            case "song":
-                uri = userServiceUrl + "/dislikedMediaList/" + userId + "/" + mediaType;
-                break;
-            case "video":
-                uri = userServiceUrl + "/dislikedMediaList/" + userId + "/" + mediaType;
-                break;
-            case "podcast":
-                uri = userServiceUrl + "/dislikedMediaList/" + userId + "/" + mediaType;
-                break;
-            default:
-                throw new IllegalArgumentException("Unsupported media type: " + mediaType);
-        }
+        List<UUID> likedOrDislikedMediaList = getMediaMap(uri).get(mediaType);
 
-        return getMediaList(uri);
+        return likedOrDislikedMediaList;
     }
 
 
-    public List<UUID> getMediaList(String uri) {
+    public Map<String, List<UUID>> getMediaMap(String uri) {
         try {
-            ResponseEntity<List<UUID>> response = restClient.put()
+            ResponseEntity<Map<String, List<UUID>>> response = restClient.put()
                     .uri(uri)
                     .retrieve()
-                    .toEntity(new ParameterizedTypeReference<List<UUID>>() {});
+                    .toEntity(new ParameterizedTypeReference<Map<String, List<UUID>>>() {});
             if (response.getStatusCode().is2xxSuccessful()) {
                 return response.getBody();
             }
