@@ -1,6 +1,11 @@
 package com.example.useractivityservice.services;
 
+import com.example.useractivityservice.configs.UserInfo;
+import com.example.useractivityservice.dto.HistoryDTO;
+import com.example.useractivityservice.dto.MostPlayedDTO;
+import com.example.useractivityservice.entities.UserActivity;
 import com.example.useractivityservice.external.UserApiClient;
+import com.example.useractivityservice.mapper.DtoConverter;
 import com.example.useractivityservice.repositories.UserActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -14,19 +19,28 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     private final UserActivityRepository userActivityRepository;
     private final UserApiClient userApiClient;
+    private final UserInfo userInfo;
+    private final DtoConverter dtoConverter;
 
     @Autowired
-    public RecommendationServiceImpl(UserActivityRepository userActivityRepository, UserApiClient userApiClient) {
+    public RecommendationServiceImpl(UserActivityRepository userActivityRepository, UserApiClient userApiClient,
+                                     UserInfo userInfo, DtoConverter dtoConverter) {
         this.userActivityRepository = userActivityRepository;
         this.userApiClient = userApiClient;
+        this.userInfo = userInfo;
+        this.dtoConverter = dtoConverter;
     }
 
+
+
+
     @Override
-    public List<UUID> getRecommendations(String userId, String mediaType) {
+    public List<UUID> getRecommendations(String mediaType) {
+        String userId = userInfo.getUserId();
         List<UUID> topTenRecommendations = new ArrayList<>();
 
         List<String> top3Genres = userActivityRepository.findMostFrequentGenresForUserId(
-                userId, PageRequest.of(0, 3), mediaType, LocalDateTime.now().minusDays(100));
+                userId, mediaType, LocalDateTime.now().minusDays(100), PageRequest.of(0, 3));
 
         List<String> allOtherGenres = userActivityRepository.findAllDistinctGenresByMediaType(mediaType);
 
@@ -93,10 +107,61 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     }
 
+    @Override
+    public List<HistoryDTO> getHistory(String mediaType) {
+        List<UserActivity> historyByMediaType = userActivityRepository.findByUserIdAndMediaTypeOrderByPlayedAtDesc(userInfo.getUserId(), mediaType);
+
+        List<HistoryDTO> historyDTOs = new ArrayList<>();
+
+        for (UserActivity userActivity : historyByMediaType) {
+            HistoryDTO historyDTO = dtoConverter.makeHistoryDTO(userActivity);
+            historyDTOs.add(historyDTO);
+        }
+
+        return historyDTOs;
+    }
+
+    @Override
+    public List<HistoryDTO> getHistoryBetween(LocalDateTime start, LocalDateTime end) {
+        List<UserActivity> historyByTime = userActivityRepository.findByUserIdAndPlayedAtBetweenOrderByPlayedAtDesc(userInfo.getUserId(), start, end);
+
+        List<HistoryDTO> historyDTOs = new ArrayList<>();
+
+        for (UserActivity userActivity : historyByTime) {
+            HistoryDTO historyDTO = dtoConverter.makeHistoryDTO(userActivity);
+            historyDTOs.add(historyDTO);
+        }
+
+        return historyDTOs;
+    }
+
+    @Override
+    public List<MostPlayedDTO> getMostPlayedForAllByMediaType(String mediaType, LocalDateTime start, LocalDateTime end) {
+        List<MostPlayedDTO> mostPlayed = userActivityRepository.findMostPlayedMediaInPeriodByMediaType(mediaType, start,
+                                                                    end, PageRequest.of(0, 100));
+        return mostPlayed;
+    }
+
+    @Override
+    public List<MostPlayedDTO> getMostPlayedForUserAndMediaType(String mediaType, LocalDateTime start, LocalDateTime end) {
+        List<MostPlayedDTO> mostPlayed = userActivityRepository.findMostPlayedMediaByUserIdAndMediaType(userInfo.getUserId(),
+                                                                    mediaType, PageRequest.of(0, 100));
+
+        return mostPlayed;
+    }
+
+    @Override
+    public List<MostPlayedDTO> getMostPlayedForUser(LocalDateTime start, LocalDateTime end) {
+        List<MostPlayedDTO> mostPlayed = userActivityRepository.findMostPlayedMediaByUserId(userInfo.getUserId(), start,
+                                                                    end, PageRequest.of(0, 100));
+        return mostPlayed;
+    }
+
+
     private List<UUID> getTopMediaForGenre(String genre, int numberOfMediaType, String mediaType, String userId) {
 
         List<UUID> topMedia = userActivityRepository.findTopMediaTypeByGenreAndPeriod(genre, LocalDateTime.now().minusDays(30),
-                PageRequest.of(0, numberOfMediaType), mediaType);
+                mediaType, PageRequest.of(0, numberOfMediaType));
 
         List<UUID> played = userActivityRepository.findMediaPlayedByUser(userId, mediaType, LocalDateTime.MIN, genre);
 
@@ -113,7 +178,7 @@ public class RecommendationServiceImpl implements RecommendationService {
 
         if (recommendations.size() < numberOfMediaType) {
             topMedia = userActivityRepository.findTopMediaTypeByGenreAndPeriod(genre, LocalDateTime.MIN,
-                    PageRequest.of(0, numberOfMediaType), mediaType);
+                    mediaType, PageRequest.of(0, numberOfMediaType));
 
             for (UUID mediaId : topMedia) {
                 if (!played.contains(mediaId)) {
