@@ -3,6 +3,8 @@ package com.example.useractivityservice.services;
 import com.example.useractivityservice.dto.ActivityDTO;
 import com.example.useractivityservice.entities.UserActivity;
 import com.example.useractivityservice.repositories.UserActivityRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
 @Service
 public class UserActivityService {
 
+    private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
     private final UserActivityRepository userActivityRepository;
 
     public UserActivityService(UserActivityRepository userActivityRepository) {
@@ -18,21 +21,34 @@ public class UserActivityService {
     }
 
     public List<UserActivity> getAllActivities() {
-        List<UserActivity> activityList = userActivityRepository.findAll();
-        if (activityList.isEmpty()) {
-            throw new RuntimeException("There are no posts in the database");
+        try{
+            List<UserActivity> activityList = userActivityRepository.findAll();
+            if (activityList.isEmpty()) {
+                throw new RuntimeException("There are no posts in the database");
+            }
+            return activityList;
+        }catch (Exception e) {
+            FUNCTIONALITY_LOGGER.error("Failed to fetch activity history- error: '{}'", e.getMessage());
+            throw new RuntimeException("Failed to fetch activity history: " + e.getMessage(), e);
         }
-        return activityList;
     }
 
     public UserActivity setActivity(ActivityDTO activityDTO, String userId) {
-        UserActivity activity = new UserActivity();
-        activity.setUserId(userId);
-        activity.setMediaId(activityDTO.getMediaId());
-        activity.setMediaType(activityDTO.getMediaType());
-        activity.setGenreName(activityDTO.getGenreName());
-        activity.setPlayedAt(LocalDateTime.now());
+        try{
+            UserActivity activity = new UserActivity();
+            activity.setUserId(userId);
+            activity.setMediaId(activityDTO.getMediaId());
+            activity.setMediaType(activityDTO.getMediaType());
+            activity.setGenreName(activityDTO.getGenreName());
+            activity.setPlayedAt(LocalDateTime.now());
+            userActivityRepository.save(activity);
 
-        return userActivityRepository.save(activity);
+            FUNCTIONALITY_LOGGER.info("User activity saved successfully: userId: '{}', mediaId: '{}'", activity.getUserId(), activity.getMediaId());
+            return activity;
+        }catch (Exception e) {
+            FUNCTIONALITY_LOGGER.error("Failed to register user activity- error: '{}'", e.getMessage());
+            throw new RuntimeException("Error while registering user activity: " + e.getMessage(), e);
+        }
+
     }
 }

@@ -4,6 +4,8 @@ import com.example.useractivityservice.dto.MediaResponseDTO;
 import com.example.useractivityservice.entities.UserActivity;
 import com.example.useractivityservice.media.MediaType;
 import com.example.useractivityservice.repositories.UserActivityRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +24,7 @@ public class VideoHistoryService {
     @Value("${video.service.url}")
     private String videoServiceUrl;
 
+    private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
     private final RestTemplate restTemplate;
     private final UserActivityRepository userActivityRepository;
 
@@ -31,22 +34,29 @@ public class VideoHistoryService {
     }
 
     public Object registerMusicHistory(String videourl, String userId, String accessToken) {
-        String endpoint = UriComponentsBuilder
-                .fromHttpUrl(videoServiceUrl + "/videos/getidandgenrefromurl/?url=")
-                .queryParam("url", videourl)
-                .toUriString();
+        try{
+            String endpoint = UriComponentsBuilder
+                    .fromHttpUrl(videoServiceUrl + "/video/videos/getidandgenrefromurl/?url=")
+                    .queryParam("url", videourl)
+                    .toUriString();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(accessToken);
-        HttpEntity<Void> entity = new HttpEntity<>(headers);
-        ResponseEntity<MediaResponseDTO> response = restTemplate.exchange(endpoint , HttpMethod.GET, entity, MediaResponseDTO.class);
-        UserActivity activity = new UserActivity();
-        activity.setUserId(userId);
-        activity.setMediaId(response.getBody().getMediaId());
-        activity.setMediaType(MediaType.VIDEO.name());
-        activity.setGenreName(response.getBody().getGenres());
-        activity.setPlayedAt(LocalDateTime.now());
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(accessToken);
+            HttpEntity<Void> entity = new HttpEntity<>(headers);
+            ResponseEntity<MediaResponseDTO> response = restTemplate.exchange(endpoint , HttpMethod.GET, entity, MediaResponseDTO.class);
+            UserActivity activity = new UserActivity();
+            activity.setUserId(userId);
+            activity.setMediaId(response.getBody().getMediaId());
+            activity.setMediaType(MediaType.VIDEO.name());
+            activity.setGenreName(response.getBody().getGenres());
+            activity.setPlayedAt(LocalDateTime.now());
+            userActivityRepository.save(activity);
+            FUNCTIONALITY_LOGGER.info("User activity saved successfully: userId: '{}', mediaUrl: '{}'",  activity.getUserId(), videourl);
 
-        return userActivityRepository.save(activity);
+            return activity;
+        }catch (Exception e) {
+            FUNCTIONALITY_LOGGER.error("Failed to register video history. mediaUrl: '{}', error: '{}'", videourl, e.getMessage());
+            throw new RuntimeException("Error while registering video history: " + e.getMessage(), e);
+        }
     }
 }
