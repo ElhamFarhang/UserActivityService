@@ -7,6 +7,8 @@ import com.example.useractivityservice.entities.UserActivity;
 import com.example.useractivityservice.external.UserApiClient;
 import com.example.useractivityservice.mapper.DtoConverter;
 import com.example.useractivityservice.repositories.UserActivityRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ public class RecommendationServiceImpl implements RecommendationService {
     private final UserApiClient userApiClient;
     private final UserInfo userInfo;
     private final DtoConverter dtoConverter;
+    private static final Logger FUNCTIONALITY_LOGGER = LogManager.getLogger("functionality");
 
     @Autowired
     public RecommendationServiceImpl(UserActivityRepository userActivityRepository, UserApiClient userApiClient,
@@ -45,6 +48,7 @@ public class RecommendationServiceImpl implements RecommendationService {
         List<String> allOtherGenres = userActivityRepository.findAllDistinctGenresByMediaType(mediaType);
 
         if (allOtherGenres.size() < 5) {
+            FUNCTIONALITY_LOGGER.warn("{} failed to retrieve genres for {}-recommendations for userId: {}", userInfo.getRole(), mediaType, userInfo.getUserId());
             throw new IllegalStateException("Not enough genres available for recommendations");
         }
 
@@ -103,8 +107,14 @@ public class RecommendationServiceImpl implements RecommendationService {
             }
         }
 
-        return topTenRecommendations;
+        if (topTenRecommendations.size() < 10) {
+            FUNCTIONALITY_LOGGER.warn("{}-recommendations for userId: '{}', retrieved by {}, but failed to get the full amount", mediaType, userInfo.getUserId(), userInfo.getRole());
 
+        } else {
+            FUNCTIONALITY_LOGGER.info("{}-recommendations for userId: '{}', retrieved by {}", mediaType, userInfo.getUserId(), userInfo.getRole());
+        }
+
+        return topTenRecommendations;
     }
 
     @Override
@@ -117,7 +127,7 @@ public class RecommendationServiceImpl implements RecommendationService {
             HistoryDTO historyDTO = dtoConverter.makeHistoryDTO(userActivity);
             historyDTOs.add(historyDTO);
         }
-
+        FUNCTIONALITY_LOGGER.info("{}-history for userId: '{}', retrieved by {}", mediaType, userInfo.getUserId(), userInfo.getRole());
         return historyDTOs;
     }
 
@@ -131,7 +141,7 @@ public class RecommendationServiceImpl implements RecommendationService {
             HistoryDTO historyDTO = dtoConverter.makeHistoryDTO(userActivity);
             historyDTOs.add(historyDTO);
         }
-
+        FUNCTIONALITY_LOGGER.info("History for {}---{} for userId: '{}' retrieved by {}", start, end, userInfo.getUserId(), userInfo.getRole());
         return historyDTOs;
     }
 
@@ -139,6 +149,8 @@ public class RecommendationServiceImpl implements RecommendationService {
     public List<MostPlayedDTO> getMostPlayedForAllByMediaType(String mediaType, LocalDateTime start, LocalDateTime end) {
         List<MostPlayedDTO> mostPlayed = userActivityRepository.findMostPlayedMediaInPeriodByMediaType(mediaType, start,
                                                                     end, PageRequest.of(0, 100));
+
+        FUNCTIONALITY_LOGGER.info("Most played {}s for all users, retrieved by {}", mediaType, userInfo.getRole());
         return mostPlayed;
     }
 
@@ -147,6 +159,7 @@ public class RecommendationServiceImpl implements RecommendationService {
         List<MostPlayedDTO> mostPlayed = userActivityRepository.findMostPlayedMediaByUserIdAndMediaType(userInfo.getUserId(),
                                                                     mediaType, PageRequest.of(0, 100));
 
+        FUNCTIONALITY_LOGGER.info("Most played {}s for userId: '{}', retrieved by {}", mediaType, userInfo.getUserId(), userInfo.getRole());
         return mostPlayed;
     }
 
@@ -154,6 +167,8 @@ public class RecommendationServiceImpl implements RecommendationService {
     public List<MostPlayedDTO> getMostPlayedForUser(LocalDateTime start, LocalDateTime end) {
         List<MostPlayedDTO> mostPlayed = userActivityRepository.findMostPlayedMediaByUserId(userInfo.getUserId(), start,
                                                                     end, PageRequest.of(0, 100));
+
+        FUNCTIONALITY_LOGGER.info("Most played by userId: '{}' for {}---{}  retrieved by {}", userInfo.getUserId(), start, end,   userInfo.getRole());
         return mostPlayed;
     }
 
