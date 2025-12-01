@@ -10,7 +10,10 @@ public class ActivityDTO {
     private String mediaType;
     private List<String> genreName;
 
-    public ActivityDTO(List<String> genreName, UUID mediaId, String mediaType) {
+    public ActivityDTO() {
+    }
+
+    public ActivityDTO(UUID mediaId, String mediaType, List<String> genreName) {
         this.genreName = genreName;
         this.mediaId = mediaId;
         this.mediaType = mediaType;
