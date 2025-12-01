@@ -49,6 +49,5 @@ public class UserActivityService {
             FUNCTIONALITY_LOGGER.error("Failed to register user activity- error: '{}'", e.getMessage());
             throw new RuntimeException("Error while registering user activity: " + e.getMessage(), e);
         }
-
     }
 }

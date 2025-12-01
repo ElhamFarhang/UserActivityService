@@ -28,7 +28,6 @@ public class SecurityConfig {
                                 .requestMatchers("/activity/playvideo/**").hasRole("edufy_User")
                                 .requestMatchers("/activity/addactivity/**").hasRole("edufy_User")
                                 .requestMatchers("/activity/activities/**").hasRole("edufy_Admin")
-//                                .requestMatchers("/activity/mostplayed/**").hasRole("edufy_Admin")
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 ->
