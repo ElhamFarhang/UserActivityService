@@ -37,8 +37,6 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
 
 
-
-
     @Override
     public List<UUID> getRecommendations(String mediaType) {
         String userId = userInfo.getUserId();
