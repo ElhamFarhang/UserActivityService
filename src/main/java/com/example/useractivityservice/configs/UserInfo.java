@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserInfo {
 
-
+/*
     private Authentication getAuth() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
@@ -21,19 +21,21 @@ public class UserInfo {
             return (Jwt) auth.getPrincipal();
         }
         throw new IllegalStateException("No JWT token found in SecurityContext");
-    }
+    }*/
 
     public String getUserId() {
-        return getJwt().getSubject();
+        return "1b2d25d9-0ac1-494d-8208-6b15b6430f3a";
+//        return getJwt().getSubject();
     }
 
 
     public String getRole(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+/*        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getAuthorities().stream()
                 .findFirst()
                 .map(grantedAuthority -> grantedAuthority.getAuthority().replace("ROLE_", ""))
-                .orElse("NO_ROLE");
+                .orElse("NO_ROLE");*/
+        return "user";
     }
 
 }

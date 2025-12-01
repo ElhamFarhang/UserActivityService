@@ -19,7 +19,7 @@ public interface UserActivityRepository extends JpaRepository<UserActivity, UUID
 ////////////////Anna/////////////////////////////////////////////////////////
 
 //Most played
-    @Query("""
+/*    @Query("""
         SELECT new com.example.useractivityservice.dto.MostPlayedDTO(ua.mediaId, COUNT(ua.mediaId))
         FROM UserActivity ua
         WHERE ua.userId = :userId
@@ -28,8 +28,27 @@ public interface UserActivityRepository extends JpaRepository<UserActivity, UUID
         ORDER BY COUNT(ua.mediaId) DESC
     """)
     List<MostPlayedDTO> findMostPlayedMediaByUserId(@Param("userId") String userId,  @Param("startDate") LocalDateTime startDate,
-                                                    @Param("endDate") LocalDateTime endDate, Pageable pageable);
+                                                    @Param("endDate") LocalDateTime endDate, Pageable pageable);*/
 
+    @Query("""
+        SELECT new com.example.useractivityservice.dto.MostPlayedDTO(ua.mediaId, 
+            COUNT(ua.mediaId), 
+            MAX(ua.mediaType)
+        )
+        FROM UserActivity ua
+        WHERE ua.userId = :userId
+          AND ua.playedAt BETWEEN :startDate AND :endDate
+        GROUP BY ua.mediaId
+        ORDER BY COUNT(ua.mediaId) DESC
+    """)
+    List<MostPlayedDTO> findMostPlayedMediaByUserId(
+            @Param("userId") String userId,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate,
+            Pageable pageable);
+
+
+/*
     @Query("""
         SELECT new com.example.useractivityservice.dto.MostPlayedDTO(ua.mediaId, COUNT(ua.mediaId))
         FROM UserActivity ua
@@ -40,8 +59,27 @@ public interface UserActivityRepository extends JpaRepository<UserActivity, UUID
     """)
     List<MostPlayedDTO> findMostPlayedMediaByUserIdAndMediaType(@Param("userId") String userId, @Param("mediaType") String mediaType,
                                                                 Pageable pageable);
+*/
 
     @Query("""
+    SELECT new com.example.useractivityservice.dto.MostPlayedDTO(
+        ua.mediaId,
+        COUNT(ua.mediaId),
+        MAX(ua.mediaType)
+    )
+    FROM UserActivity ua
+    WHERE ua.userId = :userId
+      AND ua.mediaType = :mediaType
+    GROUP BY ua.mediaId
+    ORDER BY COUNT(ua.mediaId) DESC
+""")
+    List<MostPlayedDTO> findMostPlayedMediaByUserIdAndMediaType(
+            @Param("userId") String userId,
+            @Param("mediaType") String mediaType,
+            Pageable pageable);
+
+
+/*    @Query("""
         SELECT new com.example.useractivityservice.dto.MostPlayedDTO(ua.mediaId, COUNT(ua.mediaId))
         FROM UserActivity ua
         WHERE ua.mediaType = :mediaType
@@ -50,7 +88,25 @@ public interface UserActivityRepository extends JpaRepository<UserActivity, UUID
         ORDER BY COUNT(ua.mediaId) DESC
     """)
     List<MostPlayedDTO> findMostPlayedMediaInPeriodByMediaType(@Param("mediaType") String mediaType,  @Param("startDate") LocalDateTime startDate,
-                                                               @Param("endDate") LocalDateTime endDate, Pageable pageable);
+                                                               @Param("endDate") LocalDateTime endDate, Pageable pageable);*/
+
+    @Query("""
+    SELECT new com.example.useractivityservice.dto.MostPlayedDTO(
+        ua.mediaId,
+        COUNT(ua.mediaId),
+        MAX(ua.mediaType)
+    )
+    FROM UserActivity ua
+    WHERE ua.mediaType = :mediaType
+      AND ua.playedAt BETWEEN :startDate AND :endDate
+    GROUP BY ua.mediaId
+    ORDER BY COUNT(ua.mediaId) DESC
+""")
+    List<MostPlayedDTO> findMostPlayedMediaInPeriodByMediaType(
+            @Param("mediaType") String mediaType,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate,
+            Pageable pageable);
 
 //History
 List<UserActivity> findByUserIdAndMediaTypeOrderByPlayedAtDesc(String userId, String mediaType);

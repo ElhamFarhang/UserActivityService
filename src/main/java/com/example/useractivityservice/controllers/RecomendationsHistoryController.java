@@ -6,6 +6,7 @@ import com.example.useractivityservice.dto.MostPlayedDTO;
 import com.example.useractivityservice.entities.UserActivity;
 import com.example.useractivityservice.services.RecommendationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,25 +42,29 @@ public class RecomendationsHistoryController {
 
 
     @GetMapping("/getAllHistoryBetween")
-    public ResponseEntity<List<HistoryDTO>> getUserHistoryBetween(@RequestParam LocalDateTime start, @RequestParam LocalDateTime end) {
+    public ResponseEntity<List<HistoryDTO>> getUserHistoryBetween(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+                                                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
         return ResponseEntity.ok(recommendationService.getHistoryBetween(start, end));
     }
 
 
     @GetMapping("/allusersmostplayed/{mediaType}")
     public ResponseEntity<List<MostPlayedDTO>> getMostPlayedByAll(@PathVariable String mediaType,
-                                                            @RequestParam LocalDateTime start, @RequestParam LocalDateTime end) {
+                                                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+                                                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
         return ResponseEntity.ok(recommendationService.getMostPlayedForAllByMediaType(mediaType,start, end));
     }
 
     @GetMapping("/usermostplayed/{mediaType}")
     public ResponseEntity<List<MostPlayedDTO>> getMostPlayedByUserAndMediaType(@PathVariable String mediaType,
-                                                            @RequestParam LocalDateTime start, @RequestParam LocalDateTime end) {
+                                                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+                                                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
         return ResponseEntity.ok(recommendationService.getMostPlayedForUserAndMediaType(mediaType,start, end));
     }
 
-    @GetMapping("/usermostplayedAllTypes")
-    public ResponseEntity<List<MostPlayedDTO>> getMostPlayedByUser(@RequestParam LocalDateTime start, @RequestParam LocalDateTime end) {
+    @GetMapping("/usermostplayedalltypes")
+    public ResponseEntity<List<MostPlayedDTO>> getMostPlayedByUser( @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+                                                                    @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
         return ResponseEntity.ok(recommendationService.getMostPlayedForUser(start, end));
     }
 

@@ -1,72 +1,45 @@
-
------------------ Elham - data.sql --------------
-INSERT INTO user_activity (user_id, media_id, media_type, genre_name, played_at)
-VALUES
-    ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a', 'aaaa1111-1111-1111-1111-aaaaaaa1111', 'PODCAST', '["Tech"]', '2025-11-12 10:00:00');
-
-INSERT INTO user_activity (user_id, media_id, media_type, genre_name, played_at)
-VALUES
-    ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a', 'ed6288bf-84d3-4bee-b753-4e7ef227644f', 'MUSIC', '["Rock","Alternative"]', '2025-11-12 09:00:00');
-
-----Anna-----
-INSERT INTO user_activity (user_id, media_id, media_type, genre_name, played_at) VALUES
-                                                                                     ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a','a1a1a111-1111-1111-1111-aaaaaaaaaaa1','MUSIC','["Rock","Alternative"]','2025-11-12 08:00:00'),
-                                                                                     ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a','a1a1a112-1111-1111-1111-aaaaaaaaaaa2','PODCAST','["Tech"]','2025-11-12 08:30:00'),
-                                                                                     ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a','a1a1a113-1111-1111-1111-aaaaaaaaaaa3','VIDEO','["Documentary"]','2025-11-12 09:10:00'),
-                                                                                     ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a','a1a1a114-1111-1111-1111-aaaaaaaaaaa4','MUSIC','["Jazz"]','2025-11-12 09:40:00'),
-                                                                                     ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a','a1a1a115-1111-1111-1111-aaaaaaaaaaa5','VIDEO','["Science"]','2025-11-12 10:05:00'),
-                                                                                     ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a','a1a1a116-1111-1111-1111-aaaaaaaaaaa6','PODCAST','["Business"]','2025-11-12 11:15:00'),
-                                                                                     ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a','a1a1a117-1111-1111-1111-aaaaaaaaaaa7','MUSIC','["Pop"]','2025-11-11 21:00:00'),
-                                                                                     ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a','a1a1a118-1111-1111-1111-aaaaaaaaaaa8','VIDEO','["Comedy"]','2025-11-11 21:30:00'),
-                                                                                     ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a','a1a1a119-1111-1111-1111-aaaaaaaaaaa9','MUSIC','["Metal"]','2025-11-11 22:15:00'),
-                                                                                     ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a','a1a1a120-1111-1111-1111-aaaaaaaaaaa0','PODCAST','["History"]','2025-11-11 23:55:00'),
-                                                                                     ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a','b1b1b121-2222-2222-2222-bbbbbbbbbbb1','MUSIC','["EDM"]','2025-11-10 08:10:00'),
-                                                                                     ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a','b1b1b122-2222-2222-2222-bbbbbbbbbbb2','VIDEO','["Thriller","Mystery"]','2025-11-10 09:00:00'),
-                                                                                     ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a','b1b1b123-2222-2222-2222-bbbbbbbbbbb3','MUSIC','["Folk"]','2025-11-10 09:45:00'),
-                                                                                     ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a','b1b1b124-2222-2222-2222-bbbbbbbbbbb4','VIDEO','["Drama"]','2025-11-10 10:15:00'),
-                                                                                     ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a','b1b1b125-2222-2222-2222-bbbbbbbbbbb5','PODCAST','["Education"]','2025-11-09 17:45:00'),
-                                                                                     ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a','b1b1b126-2222-2222-2222-bbbbbbbbbbb6','MUSIC','["Classical"]','2025-11-09 19:20:00'),
-                                                                                     ('1b2d25d9-0ac1-494d-8208-6b15b6430f3a','b1b1b127-2222-2222-2222-bbbbbbbbbbb7','VIDEO','["Sports"]','2025-11-09 20:30:00');
-
-
-
-
-INSERT INTO user_activity (user_id, media_id, media_type, genre_name, played_at) VALUES
-                                                                                     ('3c4e1120-8e86-41df-bc9c-55c10a531a81','c2c2c211-3333-3333-3333-ccccccccccc1','PODCAST','["Tech","AI"]','2025-11-12 07:15:00'),
-                                                                                     ('3c4e1120-8e86-41df-bc9c-55c10a531a81','c2c2c212-3333-3333-3333-ccccccccccc2','MUSIC','["Hip-Hop"]','2025-11-12 07:50:00'),
-                                                                                     ('3c4e1120-8e86-41df-bc9c-55c10a531a81','c2c2c213-3333-3333-3333-ccccccccccc3','VIDEO','["Sci-Fi"]','2025-11-12 08:20:00'),
-                                                                                     ('3c4e1120-8e86-41df-bc9c-55c10a531a81','c2c2c214-3333-3333-3333-ccccccccccc4','MUSIC','["Country"]','2025-11-12 09:00:00'),
-                                                                                     ('3c4e1120-8e86-41df-bc9c-55c10a531a81','c2c2c215-3333-3333-3333-ccccccccccc5','PODCAST','["Finance"]','2025-11-12 10:10:00'),
-                                                                                     ('3c4e1120-8e86-41df-bc9c-55c10a531a81','c2c2c216-3333-3333-3333-ccccccccccc6','VIDEO','["Action"]','2025-11-12 11:00:00'),
-                                                                                     ('3c4e1120-8e86-41df-bc9c-55c10a531a81','d3d3d221-4444-4444-4444-ddddddddddd1','MUSIC','["Reggae"]','2025-11-11 18:10:00'),
-                                                                                     ('3c4e1120-8e86-41df-bc9c-55c10a531a81','d3d3d222-4444-4444-4444-ddddddddddd2','VIDEO','["Fantasy"]','2025-11-11 18:50:00'),
-                                                                                     ('3c4e1120-8e86-41df-bc9c-55c10a531a81','d3d3d223-4444-4444-4444-ddddddddddd3','PODCAST','["Gaming"]','2025-11-11 19:30:00'),
-                                                                                     ('3c4e1120-8e86-41df-bc9c-55c10a531a81','d3d3d224-4444-4444-4444-ddddddddddd4','MUSIC','["Indie"]','2025-11-11 21:10:00'),
-                                                                                     ('3c4e1120-8e86-41df-bc9c-55c10a531a81','d3d3d225-4444-4444-4444-ddddddddddd5','VIDEO','["Horror"]','2025-11-11 22:30:00'),
-                                                                                     ('3c4e1120-8e86-41df-bc9c-55c10a531a81','e4e4e231-5555-5555-5555-eeeeeeeeeee1','PODCAST','["Self-Help"]','2025-11-10 12:00:00'),
-                                                                                     ('3c4e1120-8e86-41df-bc9c-55c10a531a81','e4e4e232-5555-5555-5555-eeeeeeeeeee2','MUSIC','["Soul"]','2025-11-10 12:45:00'),
-                                                                                     ('3c4e1120-8e86-41df-bc9c-55c10a531a81','e4e4e233-5555-5555-5555-eeeeeeeeeee3','VIDEO','["Nature"]','2025-11-10 14:20:00'),
-                                                                                     ('3c4e1120-8e86-41df-bc9c-55c10a531a81','e4e4e234-5555-5555-5555-eeeeeeeeeee4','MUSIC','["House"]','2025-11-09 16:00:00'),
-                                                                                     ('3c4e1120-8e86-41df-bc9c-55c10a531a81','e4e4e235-5555-5555-5555-eeeeeeeeeee5','PODCAST','["Philosophy"]','2025-11-09 17:25:00'),
-                                                                                     ('3c4e1120-8e86-41df-bc9c-55c10a531a81','e4e4e236-5555-5555-5555-eeeeeeeeeee6','VIDEO','["Crime"]','2025-11-09 18:05:00');
-
-
-
-
-INSERT INTO user_activity (user_id, media_id, media_type, genre_name, played_at) VALUES
-                                                                                     ('d6684da9-9350-424a-878d-6f64511165fc','f5f5f311-6666-6666-6666-fffffffffff1','MUSIC','["Lo-fi"]','2025-11-12 06:30:00'),
-                                                                                     ('d6684da9-9350-424a-878d-6f64511165fc','f5f5f312-6666-6666-6666-fffffffffff2','VIDEO','["Adventure"]','2025-11-12 07:00:00'),
-                                                                                     ('d6684da9-9350-424a-878d-6f64511165fc','f5f5f313-6666-6666-6666-fffffffffff3','PODCAST','["Science"]','2025-11-12 07:25:00'),
-                                                                                     ('d6684da9-9350-424a-878d-6f64511165fc','f5f5f314-6666-6666-6666-fffffffffff4','MUSIC','["R&B"]','2025-11-12 08:10:00'),
-                                                                                     ('d6684da9-9350-424a-878d-6f64511165fc','f5f5f315-6666-6666-6666-fffffffffff5','VIDEO','["Military"]','2025-11-12 08:55:00'),
-                                                                                     ('d6684da9-9350-424a-878d-6f64511165fc','f5f5f316-6666-6666-6666-fffffffffff6','PODCAST','["True Crime"]','2025-11-12 10:00:00'),
-                                                                                     ('d6684da9-9350-424a-878d-6f64511165fc','g6g6g321-7777-7777-7777-ggggggggggg1','MUSIC','["Blues"]','2025-11-11 18:30:00'),
-                                                                                     ('d6684da9-9350-424a-878d-6f64511165fc','g6g6g322-7777-7777-7777-ggggggggggg2','VIDEO','["Epic"]','2025-11-11 19:10:00'),
-                                                                                     ('d6684da9-9350-424a-878d-6f64511165fc','g6g6g323-7777-7777-7777-ggggggggggg3','PODCAST','["Health"]','2025-11-11 20:45:00'),
-                                                                                     ('d6684da9-9350-424a-878d-6f64511165fc','g6g6g324-7777-7777-7777-ggggggggggg4','MUSIC','["Piano","Classical"]','2025-11-11 21:30:00'),
-                                                                                     ('d6684da9-9350-424a-878d-6f64511165fc','g6g6g325-7777-7777-7777-ggggggggggg5','VIDEO','["War"]','2025-11-10 11:15:00'),
-                                                                                     ('d6684da9-9350-424a-878d-6f64511165fc','h7h7h331-8888-8888-8888-hhhhhhhhhhh1','MUSIC','["Ambient"]','2025-11-10 12:25:00'),
-                                                                                     ('d6684da9-9350-424a-878d-6f64511165fc','h7h7h332-8888-8888-8888-hhhhhhhhhhh2','VIDEO','["Rom-Com"]','2025-11-10 13:00:00'),
-                                                                                     ('d6684da9-9350-424a-878d-6f64511165fc','h7h7h333-8888-8888-8888-hhhhhhhhhhh3','PODCAST','["Motivation"]','2025-11-10 13:45:00'),
-                                                                                     ('d6684da9-9350-424a-878d-6f64511165fc','h7h7h334-8888-8888-8888-hhhhhhhhhhh4','VIDEO','["Animation"]','2025-11-09 18:10:00'),
-                                                                                     ('d6684da9-9350-424a-878d-6f64511165fc','h7h7h335-8888-8888-8888-hhhhhhhhhhh5','MUSIC','["Synthwave"]','2025-11-09 19:55:00');
+INSERT INTO user_activity (id, played_at, media_id, media_type, user_id, genre_name) VALUES
+-- User 1b2d25d9-0ac1-494d-8208-6b15b6430f3a
+(42, '2025-11-13 08:15:00', 'f4a1c7f3-2a4b-4f6d-9f21-abc111111111', 'MUSIC', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Rock"]'),
+(43, '2025-11-13 08:16:00', 'f4a1c7f3-2a4b-4f6d-9f21-abc111111111', 'MUSIC', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Rock"]'),
+(44, '2025-11-13 08:17:00', 'f4a1c7f3-2a4b-4f6d-9f21-abc111111111', 'MUSIC', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Rock"]'),
+(45, '2025-11-13 08:18:00', 'f4a1c7f3-2a4b-4f6d-9f21-abc111111111', 'MUSIC', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Rock"]'),
+(53, '2025-11-13 09:00:00', 'a6c4e8d7-1b2f-4c3e-9f44-abc222222222', 'VIDEO', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Comedy"]'),
+(54, '2025-11-13 09:30:00', 'b7d8f9a2-5c6d-4e7f-8a11-abc333333333', 'PODCAST', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Tech"]'),
+(55, '2025-11-13 10:15:00', 'c8e9a1b3-6d7e-4f8a-9b22-abc444444444', 'MUSIC', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Jazz"]'),
+(46, '2025-11-13 10:16:00', 'c8e9a1b3-6d7e-4f8a-9b22-abc444444444', 'MUSIC', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Jazz"]'),
+(47, '2025-11-13 10:17:00', 'c8e9a1b3-6d7e-4f8a-9b22-abc444444444', 'MUSIC', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Jazz"]'),
+(56, '2025-11-13 11:00:00', 'd9f1b2c4-7e8f-4a9b-8c33-abc555555555', 'VIDEO', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Documentary"]'),
+(57, '2025-11-13 11:45:00', 'e1a2c3d4-8f9a-4b1c-9d44-abc666666666', 'PODCAST', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Business"]'),
+(58, '2025-11-13 12:30:00', 'f2b3d4e5-9a0b-4c2d-8e55-abc777777777', 'MUSIC', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Rock","Alternative"]'),
+(59, '2025-11-13 13:15:00', 'a3c4d5e6-0b1c-4d3e-9f66-abc888888888', 'VIDEO', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Drama"]'),
+(60, '2025-11-13 14:00:00', 'b4d5e6f7-1c2d-4e3f-8a77-abc999999999', 'PODCAST', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Education"]'),
+(61, '2025-11-13 14:45:00', 'c5e6f7a8-2d3e-4f4a-9b88-abc101010101', 'MUSIC', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Metal"]'),
+(62, '2025-11-13 15:30:00', 'd6f7a8b9-3e4f-4a5b-8c99-abc111111112', 'VIDEO', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Science"]'),
+(63, '2025-11-13 16:15:00', 'e7a8b9c1-4f5a-4b6c-9daa-abc121212121', 'PODCAST', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["History"]'),
+(64, '2025-11-13 17:00:00', 'f8b9c1d2-5a6b-4c7d-8ebb-abc131313131', 'MUSIC', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Pop"]'),
+(65, '2025-11-13 17:45:00', 'a9c1d2e3-6b7c-4d8e-9fcc-abc141414141', 'VIDEO', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Thriller","Mystery"]'),
+(66, '2025-11-13 18:30:00', 'b1d2e3f4-7c8d-4e9f-8add-abc151515151', 'PODCAST', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Tech","AI"]'),
+(67, '2025-11-13 19:15:00', 'c2e3f4a5-8d9e-4a1b-9bee-abc161616161', 'MUSIC', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["EDM"]'),
+(68, '2025-11-13 20:00:00', 'd3f4a5b6-9e0f-4b2c-8cff-abc171717171', 'VIDEO', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Comedy"]'),
+(69, '2025-11-13 20:45:00', 'e4a5b6c7-0f1a-4c3d-9d00-abc181818181', 'PODCAST', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Business"]'),
+(70, '2025-11-13 21:30:00', 'f5b6c7d8-1a2b-4d4e-8e11-abc191919191', 'MUSIC', '1b2d25d9-0ac1-494d-8208-6b15b6430f3a', '["Rock"]'),
+-- User 3c4e1120-8e86-41df-bc9c-55c10a531a81
+(71, '2025-11-13 08:00:00', 'a1e2f3d4-5b6c-4d7e-8f22-abc202020202', 'VIDEO', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["Sci-Fi"]'),
+(72, '2025-11-13 08:45:00', 'b2f3d4e5-6c7d-4e8f-9a33-abc212121212', 'MUSIC', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["Hip-Hop"]'),
+(73, '2025-11-13 09:30:00', 'c3d4e5f6-7d8e-4f9a-8b44-abc222222222', 'PODCAST', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["Finance"]'),
+(74, '2025-11-13 10:15:00', 'd4e5f6a7-8e9f-4a1b-9c55-abc232323232', 'VIDEO', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["Action"]'),
+(75, '2025-11-13 11:00:00', 'e5f6a7b8-9f0a-4b2c-8d66-abc242424242', 'MUSIC', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["Country"]'),
+(76, '2025-11-13 11:45:00', 'f6a7b8c9-0a1b-4c3d-9e77-abc252525252', 'PODCAST', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["Gaming"]'),
+(77, '2025-11-13 12:30:00', 'a7b8c9d1-1b2c-4d4e-8f88-abc262626262', 'VIDEO', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["Fantasy"]'),
+(78, '2025-11-13 13:15:00', 'b8c9d1e2-2c3d-4e5f-9a99-abc272727272', 'MUSIC', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["Indie"]'),
+(79, '2025-11-13 14:00:00', 'c9d1e2f3-3d4e-4f6a-8b00-abc282828282', 'PODCAST', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["Self-Help"]'),
+(80, '2025-11-13 14:45:00', 'd1e2f3a4-4e5f-4a7b-9c11-abc292929292', 'VIDEO', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["Rom-Com"]'),
+(81, '2025-11-13 15:30:00', 'e2f3a4b5-5f6a-4b8c-8d22-abc303030303', 'MUSIC', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["Soul"]'),
+(82, '2025-11-13 16:15:00', 'f3a4b5c6-6a7b-4c9d-9e33-abc313131313', 'PODCAST', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["Philosophy"]'),
+(83, '2025-11-13 17:00:00', 'a4b5c6d7-7b8c-4d1e-8f44-abc323232323', 'VIDEO', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["Adventure"]'),
+(84, '2025-11-13 17:45:00', 'b5c6d7e8-8c9d-4e2f-9a55-abc333333333', 'MUSIC', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["House"]'),
+(85, '2025-11-13 18:30:00', 'c6d7e8f9-9d0a-4f3a-8b66-abc343434343', 'PODCAST', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["Motivation"]'),
+(86, '2025-11-13 19:15:00', 'd7e8f9a1-0a1b-4a4b-9c77-abc353535353', 'VIDEO', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["Horror"]'),
+(87, '2025-11-13 20:00:00', 'e8f9a1b2-1b2c-4b5c-8d88-abc363636363', 'MUSIC', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["R&B"]'),
+(88, '2025-11-13 20:45:00', 'f9a1b2c3-2c3d-4c6d-9e99-abc373737373', 'PODCAST', '3c4e1120-8e86-41df-bc9c-55c10a531a81', '["Education"]');
