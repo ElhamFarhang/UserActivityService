@@ -60,7 +60,7 @@ public class UserActivityController {
         try {
             String userId = jwt.getSubject();
             String accessToken = authHeader.replace("Bearer ", "");
-            return ResponseEntity.ok(videoHistoryService.registerMusicHistory(videourl, userId, accessToken));
+            return ResponseEntity.ok(videoHistoryService.registerVideoHistory(videourl, userId, accessToken));
         } catch (Exception e) {
             return ResponseEntity.status(401).body(Map.of("error", e.getMessage()));
         }

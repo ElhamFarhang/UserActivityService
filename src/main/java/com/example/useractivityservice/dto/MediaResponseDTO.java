@@ -8,6 +8,9 @@ public class MediaResponseDTO {
     private UUID mediaId;
     private List<String> genres;
 
+    public MediaResponseDTO() {
+    }
+
     public MediaResponseDTO(List<String> genres, UUID mediaId) {
         this.genres = genres;
         this.mediaId = mediaId;

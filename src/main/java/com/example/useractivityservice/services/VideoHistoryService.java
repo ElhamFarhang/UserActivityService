@@ -33,7 +33,7 @@ public class VideoHistoryService {
         this.userActivityRepository = userActivityRepository;
     }
 
-    public Object registerMusicHistory(String videourl, String userId, String accessToken) {
+    public Object registerVideoHistory(String videourl, String userId, String accessToken) {
         try{
             String endpoint = UriComponentsBuilder
                     .fromHttpUrl(videoServiceUrl + "/video/videos/getidandgenrefromurl/?url=")

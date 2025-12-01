@@ -37,6 +37,15 @@ public class UserActivity {
     public UserActivity() {
     }
 
+    public UserActivity(Long id,String userId, UUID mediaId, String mediaType,List<String> genreName, LocalDateTime playedAt) {
+        this.id = id;
+        this.userId = userId;
+        this.mediaId = mediaId;
+        this.mediaType = mediaType;
+        this.genreName = genreName;
+        this.playedAt = playedAt;
+    }
+
     public List<String> getGenreName() {
         return genreName;
     }
