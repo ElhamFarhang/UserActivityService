@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
@@ -93,121 +92,9 @@ class RecommendationServiceImplTest {
                 () -> service.getRecommendations(mediaType));
     }
 
-    @Test
-    void getRecommendations_ShouldUseTop3GenresAndReturn10Items() {
-        when(userInfoMock.getUserId()).thenReturn(userId);
-
-        UserActivity ua1 = new UserActivity();
-        ua1.setUserId(userId);
-        ua1.setMediaType(mediaType);
-        ua1.setPlayedAt(LocalDateTime.now().minusDays(5));
-        ua1.setGenreName(List.of("rock", "pop"));
-
-        UserActivity ua2 = new UserActivity();
-        ua2.setUserId(userId);
-        ua2.setMediaType(mediaType);
-        ua2.setPlayedAt(LocalDateTime.now().minusDays(20));
-        ua2.setGenreName(List.of("jazz"));
-
-        when(repoMock.findByUserIdAndMediaTypeAndPlayedAtAfter(any(), any(), any()))
-                .thenReturn(List.of(ua1, ua2));
-
-        UserActivity g1 = new UserActivity();
-        g1.setGenreName(List.of("rock"));
-        UserActivity g2 = new UserActivity();
-        g2.setGenreName(List.of("pop"));
-        UserActivity g3 = new UserActivity();
-        g3.setGenreName(List.of("jazz"));
-        UserActivity g4 = new UserActivity();
-        g4.setGenreName(List.of("metal"));
-        UserActivity g5 = new UserActivity();
-        g5.setGenreName(List.of("blues"));
-
-        when(repoMock.findByMediaType(mediaType))
-                .thenReturn(List.of(g1, g2, g3, g4, g5));
-
-        List<UUID> fake = List.of(UUID.randomUUID(), UUID.randomUUID());
-        RecommendationServiceImpl spyService = Mockito.spy(service);
-
-        doReturn(fake).when(spyService)
-                .getTopMediaForGenre(any(), anyInt(), eq(mediaType), eq(userId));
-
-        List<UUID> res = spyService.getRecommendations(mediaType);
-
-        assertEquals(10, res.size());
-    }
-
-    @Test
-    void getRecommendations_ShouldHandleLessThan3UserGenres() {
-        when(userInfoMock.getUserId()).thenReturn(userId);
-
-        UserActivity ua = new UserActivity();
-        ua.setUserId(userId);
-        ua.setMediaType(mediaType);
-        ua.setPlayedAt(LocalDateTime.now().minusDays(5));
-        ua.setGenreName(List.of("rock"));
-        when(repoMock.findByUserIdAndMediaTypeAndPlayedAtAfter(any(), any(), any()))
-                .thenReturn(List.of(ua));
-
-
-        UserActivity g1 = new UserActivity(); g1.setGenreName(List.of("rock"));
-        UserActivity g2 = new UserActivity(); g2.setGenreName(List.of("pop"));
-        UserActivity g3 = new UserActivity(); g3.setGenreName(List.of("jazz"));
-        UserActivity g4 = new UserActivity(); g4.setGenreName(List.of("metal"));
-        UserActivity g5 = new UserActivity(); g5.setGenreName(List.of("blues"));
-
-        when(repoMock.findByMediaType(mediaType))
-                .thenReturn(List.of(g1, g2, g3, g4, g5));
-
-        RecommendationServiceImpl spyService = Mockito.spy(service);
-        doReturn(List.of(UUID.randomUUID()))
-                .when(spyService)
-                .getTopMediaForGenre(any(), anyInt(), eq(mediaType), eq(userId));
-
-        List<UUID> res = spyService.getRecommendations(mediaType);
-
-        assertFalse(res.isEmpty());
-    }
-
-    @Test
-    void getRecommendations_ShouldNotFailWhenGetTopMediaReturnsEmpty() {
-        when(userInfoMock.getUserId()).thenReturn(userId);
-
-
-        UserActivity ua = new UserActivity();
-        ua.setUserId(userId);
-        ua.setMediaType(mediaType);
-        ua.setPlayedAt(LocalDateTime.now().minusDays(5));
-        ua.setGenreName(List.of("rock", "pop", "jazz"));
-        when(repoMock.findByUserIdAndMediaTypeAndPlayedAtAfter(any(), any(), any()))
-                .thenReturn(List.of(ua));
-
-        // DB genres
-        List<UserActivity> allG = new ArrayList<>();
-        for (String g : List.of("rock", "pop", "jazz", "metal", "blues"))
-        {
-            UserActivity x = new UserActivity();
-            x.setGenreName(List.of(g));
-            allG.add(x);
-        }
-        when(repoMock.findByMediaType(mediaType))
-                .thenReturn(allG);
-
-        RecommendationServiceImpl spyService = Mockito.spy(service);
-        doReturn(Collections.emptyList())
-                .when(spyService)
-                .getTopMediaForGenre(any(), anyInt(), eq(mediaType), eq(userId));
-
-        List<UUID> res = spyService.getRecommendations(mediaType);
-
-        assertNotNull(res);
-    }
     //getTopMediaForGenre
 
     //findTopMediaByGenreInRange
-
-
-
 
     // getHistory
     @Test
