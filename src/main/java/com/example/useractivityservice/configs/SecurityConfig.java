@@ -17,7 +17,7 @@ public class SecurityConfig {
         this.jwtAuthConverter = jwtAuthConverter;
     }
 
-    /*@Bean
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
@@ -42,19 +42,8 @@ public class SecurityConfig {
                                 .jwt(jwt->jwt.jwtAuthenticationConverter(jwtAuthConverter))
                 );
         return http.build();
-    }*/
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // << no login required
-                )
-                .oauth2ResourceServer(oauth2 -> oauth2.disable()); // disable JWT resource server
-
-        return http.build();
     }
+
 
 
 }
