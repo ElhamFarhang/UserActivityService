@@ -129,7 +129,7 @@ public class RecommendationServiceImpl implements RecommendationService {
         return topTenRecommendations;
     }
 
-    private List<UUID> getTopMediaForGenre(String genre, int numberOfMediaType, String mediaType, String userId) {
+    public List<UUID> getTopMediaForGenre(String genre, int numberOfMediaType, String mediaType, String userId) {
         List<UUID> topMedia = findTopMediaByGenreInRange(genre, LocalDateTime.now().minusDays(30),
                 LocalDateTime.now(), 100, mediaType);
         List<UserActivity> activities = userActivityRepository.findByUserIdAndMediaTypeAndPlayedAtAfter(
@@ -207,7 +207,7 @@ public class RecommendationServiceImpl implements RecommendationService {
         return recommendations;
     }
 
-    private List<UUID> findTopMediaByGenreInRange(String genre, LocalDateTime start, LocalDateTime end, int limit, String mediaType) {
+    public List<UUID> findTopMediaByGenreInRange(String genre, LocalDateTime start, LocalDateTime end, int limit, String mediaType) {
         List<UserActivity> mediaPlayed = userActivityRepository.findByMediaTypeAndPlayedAtBetween(mediaType, start, end);
 
         Map<UUID, Long> counts = mediaPlayed.stream()
