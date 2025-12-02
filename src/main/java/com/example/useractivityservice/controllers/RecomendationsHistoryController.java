@@ -3,7 +3,6 @@ package com.example.useractivityservice.controllers;
 
 import com.example.useractivityservice.dto.HistoryDTO;
 import com.example.useractivityservice.dto.MostPlayedDTO;
-import com.example.useractivityservice.entities.UserActivity;
 import com.example.useractivityservice.services.RecommendationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;

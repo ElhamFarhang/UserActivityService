@@ -12,20 +12,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 /// ///////////////////////////////////ANNA////////////////////////////////////////
@@ -55,8 +52,6 @@ class RecommendationServiceImplTest {
 
     private final UUID id1 = UUID.randomUUID();
     private final UUID id2 = UUID.randomUUID();
-    private final UUID id3 = UUID.randomUUID();
-    private final UUID id4 = UUID.randomUUID();
     private final LocalDateTime start = LocalDateTime.now().minusDays(2);
     private final LocalDateTime end = LocalDateTime.now();
 
