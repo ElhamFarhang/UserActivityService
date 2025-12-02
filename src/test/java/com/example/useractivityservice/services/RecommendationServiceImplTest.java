@@ -14,18 +14,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 /// ///////////////////////////////////ANNA////////////////////////////////////////
@@ -55,8 +52,6 @@ class RecommendationServiceImplTest {
 
     private final UUID id1 = UUID.randomUUID();
     private final UUID id2 = UUID.randomUUID();
-    private final UUID id3 = UUID.randomUUID();
-    private final UUID id4 = UUID.randomUUID();
     private final LocalDateTime start = LocalDateTime.now().minusDays(2);
     private final LocalDateTime end = LocalDateTime.now();
 
@@ -69,7 +64,7 @@ class RecommendationServiceImplTest {
         userActivity.setMediaId(id2);
         userActivity.setUserId(userId);
         userActivity.setPlayedAt(LocalDateTime.now().minusDays(1));
-        userActivity.setGenreName(List.of("test"));
+        userActivity.setGenreName(List.of("rock"));
 
         mostPlayedDTO = new MostPlayedDTO(id1, 2L, mediaType);
 
@@ -78,13 +73,23 @@ class RecommendationServiceImplTest {
     }
 
     // getRecommendations
+    @Test
+    void getRecommendations_ShouldThrowIfNotEnoughGenres() {
+        when(userInfoMock.getUserId()).thenReturn(userId);
+
+        when(repoMock.findByUserIdAndMediaTypeAndPlayedAtAfter(any(), any(), any()))
+                .thenReturn(List.of(userActivity));
+
+        when(repoMock.findByMediaType(mediaType))
+                .thenReturn(List.of(userActivity));
+
+        assertThrows(IllegalStateException.class,
+                () -> service.getRecommendations(mediaType));
+    }
 
     //getTopMediaForGenre
 
     //findTopMediaByGenreInRange
-
-
-
 
     // getHistory
     @Test
